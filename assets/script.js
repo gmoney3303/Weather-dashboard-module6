@@ -39,11 +39,13 @@ fetch(geoapi)
 
   var currentDate = dayjs().format(" (MM/DD/YYYY)");
 
+// grabbing the content from api
   var currentTemp = currentWeather.main.temp;
   var currentWind = currentWeather.wind.speed;
   var currentHumidity = currentWeather.main.humidity;
   var icon = currentWeather.weather.icon;
 
+  // tried to convert units before realizing you can add on api to make imperial
   //  var fahrenheit = (currentTemp - 273.5) * 9/5 +32;
   //  var rounded = Math.round(fahrenheit * 10) / 10;
 
@@ -56,6 +58,7 @@ fetch(geoapi)
   <p> ${icon}</p>
   `;
 })}
+
 // Function to fetch 5-day weather forecast data
 function fetchWeatherForecast(cityName) {
   // Construct the API URL with the provided parameters
@@ -95,6 +98,7 @@ function fetchWeatherForecast(cityName) {
         console.log('Wind Speed:', windSpeed);
         console.log('Humidity:', humidity);
 
+        // goes through every column adding the information
         var columnId = `column${i + 1}`;
         var column = document.getElementById(columnId);
         column.innerHTML = `

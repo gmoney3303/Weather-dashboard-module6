@@ -2,6 +2,8 @@
 
 ## Deployed link
 
+https://gmoney3303.github.io/Weather-dashboard-module6/
+
 ## Usage
 
 ![alt text](assets/images/Capture.PNG)
