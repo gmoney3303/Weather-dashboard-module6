@@ -7,10 +7,8 @@ var container = document.querySelector('.columns')
 function handleSearchFormSubmit(event) {
   event.preventDefault();
 
-  
-
   var searchInputVal = document.querySelector('#Search-value').value;
-
+  
   if (!searchInputVal) {
     console.error('You need a search input value!');
     return;
@@ -21,22 +19,21 @@ displaysearch();
 }
 
 function getcitydata(cityName) {
-var geoapi = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${WeatherKey}`;
+var geoapi = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${WeatherKey}&units=imperial`;
 fetch(geoapi)
-.then(function(response) {
-  // Check if the request was successful
-  if (response.ok) {
-    // Parse the response data as JSON
-    return response.json();
-  } else {
-    throw new Error('Error: ' + response.status);
-  }
+  .then(function(response) {
+    // Check if the request was successful
+    if (response.ok) {
+      // Parse the response data as JSON
+      return response.json();
+    } else {
+      throw new Error('Error: ' + response.status);
+    }
 })
 .then(function(data) {
   // Process the retrieved data
   console.log(data);
   console.log(data.main.temp);
-  console.log(data.weather.icon)
 
   var currentWeather = data;
 
@@ -47,14 +44,14 @@ fetch(geoapi)
   var currentHumidity = currentWeather.main.humidity;
   var icon = currentWeather.weather.icon;
 
-   var fahrenheit = (currentTemp - 273.5) * 9/5 +32;
-   var rounded = Math.round(fahrenheit * 10) / 10;
+  //  var fahrenheit = (currentTemp - 273.5) * 9/5 +32;
+  //  var rounded = Math.round(fahrenheit * 10) / 10;
 
   var bigColumn = document.getElementById('big-display');
   bigColumn.innerHTML = `
   <h2> ${cityName} ${currentDate} </h2>
-  <p>Temp: ${rounded}  °F</p>
-  <p>Wind: ${currentWind} m/s</p>
+  <p>Temp: ${currentTemp}  °F</p>
+  <p>Wind: ${currentWind} MPH</p>
   <p>Humidity: ${currentHumidity}%</p>
   <p> ${icon}</p>
   `;
@@ -62,7 +59,7 @@ fetch(geoapi)
 // Function to fetch 5-day weather forecast data
 function fetchWeatherForecast(cityName) {
   // Construct the API URL with the provided parameters
-  var apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${WeatherKey}`;
+  var apiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${WeatherKey}&units=imperial`;
 
   // Make the API request using fetch()
   fetch(apiUrl)
@@ -102,8 +99,8 @@ function fetchWeatherForecast(cityName) {
         var column = document.getElementById(columnId);
         column.innerHTML = `
           <h2>Day ${i + 1} Forecast</h2>
-          <p>Temp: ${temperature} K</p>
-          <p>Wind: ${windSpeed} m/s</p>
+          <p>Temp: ${temperature} °F</p>
+          <p>Wind: ${windSpeed} MPH</p>
           <p>Humidity: ${humidity}%</p>
         `;
       }
@@ -120,11 +117,12 @@ function displaysearch() {
   localStorage.setItem('searched', JSON.stringify(searchInputVal));
 
   for ( var i = 0; i < localStorage.length; i++) {
-    var storedSearch = localStorage.getItem(searchInputVal);
+    var storedSearch = JSON.parse(localStorage.getItem("searched"));
     var searchList = document.getElementById('myList');
     searchList.innerHTML = `
-    <li>${storedSearch}</li>
+    <button> ${storedSearch}</button>
     `;
+    console.log(storedSearch);
   }
 }
 
